@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>噩梦时代 - 互动阅读</title>
+    <style>
+        /* ================= 全局样式 ================= */
+        body {
+            background-color: #1a1a1a; /* 深色背景，适合悬疑氛围 */
+            color: #e0e0e0;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.8;
+            /* 隐藏滚动条，更像APP */
+            overflow-x: hidden;
+        }
+
+        /* 进度提示器（固定在顶部） */
+        #progress-hint {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* 毛玻璃效果！ */
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #aaa;
+            z-index: 100;
+            transition: opacity 0.5s;
+            pointer-events: none; /* 让鼠标点击穿透它 */
+        }
+
+        /* 内容容器 */
+        #story-container {
+            max-width: 600px;
+            margin: 60px auto;
+        }
+
+        /* 默认隐藏所有的对话/旁白 */
+        .story-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            margin-bottom: 20px;
+            pointer-events: none; /* 未显示时不可点击 */
+            display: none; /* 彻底隐藏，避免占位 */
+        }
+
+        /* 显示时的状态 */
+        .story-item.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* ================= 旁白样式 ================= */
+        .narration {
+            color: #888;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+
+        /* ================= 对话气泡样式 ================= */
+        .msg-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+        }
+        
+        .left-msg { align-self: flex-start; align-items: flex-start; }
+        .right-msg { align-self: flex-end; align-items: flex-end; }
+
+        .msg-name {
+            font-size: 0.8em;
+            color: #888;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .bubble {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 1em;
+            position: relative;
+            word-wrap: break-word;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* 左侧气泡 */
+        .left-msg .bubble {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border-top-left-radius: 0;
+        }
+        /* 左侧小三角 */
+        .left-msg .bubble::before {
+            content: ""; position: absolute; top: 0; left: -8px;
+            border-top: 10px solid #2a2a2a; border-left: 10px solid transparent;
+        }
+
+        /* 右侧气泡 */
+        .right-msg .bubble {
+            background-color: #4a7c59; /* 暗绿色 */
+            color: #fff;
+            border-top-right-radius: 0;
+        }
+        /* 右侧小三角 */
+        .right-msg .bubble::after {
+            content: ""; position: absolute; top: 0; right: -8px;
+            border-top: 10px solid #4a7c59; border-right: 10px solid transparent;
+        }
+
+        /* 点击屏幕的提示动画 */
+        .click-hint {
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 30px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部进度提示 -->
+    <div id="progress-hint">点击屏幕继续 ➔</div>
+
+    <!-- 故事内容容器 -->
+    <div id="story-container">
+        
+        <!-- 第1段：旁白 -->
+        <div class="story-item narration">
+            凌晨三点，宿舍楼的墙壁上，爬满了阴暗的爬山虎。
+        </div>
+
+        <!-- 第2段：左侧对话（余庆厌） -->
+        <div class="story-item msg-container left-msg">
+            <div class="msg-name">余庆厌</div>
+            <div class="bubble">子狼……子狼你睡了吗？</div>
+        </div>
+
+        <!-- 第3段：右侧对话（万俟子琼） -->
+        <div class="story-item msg-container right-msg">
+            <div class="msg-name">万俟子琼</div>
+            <div class="bubble">被你的消息提示音吵醒了，头好疼。</div>
+        </div>
+
+        <!-- 第4段：左侧对话 -->
+        <div class="story-item msg-container left-msg">
+            <div class="msg-name">余庆厌</div>
+            <div class="bubble">你能不能来宿舍楼下接我？</div>
+        </div>
+
+        <!-- 第5段：右侧对话 -->
+        <div class="story-item msg-container right-msg">
+            <div class="msg-name">万俟子琼</div>
+            <div class="bubble">……？</div>
+        </div>
+
+        <!-- 第6段：旁白 -->
+        <div class="story-item narration">
+            她正准备往前挪动，头发忽然一疼，舍管阿姨和善的脸，出现在了窗户旁边。
+        </div>
+
+        <!-- 第7段：左侧对话 -->
+        <div class="story-item msg-container left-msg">
+            <div class="msg-name">舍管阿姨</div>
+            <div class="bubble">你大半夜的不睡，蹲在我窗户底下干什么？</div>
+        </div>
+4
+        <!-- 全部读完后的提示 -->
+        <div id="end-hint" class="click-hint" style="display: none;">
+            —— 本章完 ——
+        </div>
+
+    </div>
+
+    <!-- ================= 核心 JavaScript 逻辑 ================= -->
+    <script>
+        // 获取所有的故事段落
+        const items = document.querySelectorAll('.story-item');
+        let currentIndex = 0; // 当前显示到了第几段
+
+        // 点击屏幕任意位置触发的函数
+        function revealNext() {
+            // 如果还有没显示的内容
+            if (currentIndex < items.length) {
+                // 显示当前段落
+                items[currentIndex].classList.add('show');
+                currentIndex++;
+                
+                // 如果是最后一段，隐藏进度提示，显示结束提示
+                if (currentIndex === items.length) {
+                    document.getElementById('progress-hint').style.opacity = '0';
+                    document.getElementById('end-hint').style.display = 'block';
+                }
+            }
+        }
+
+        // 监听整个屏幕的点击事件
+        document.body.addEventListener('click', revealNext);
+
+        // 监听键盘回车键（方便电脑上测试）
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                revealNext();
+            }
+        });
+    </script>
+</body>
+</html>
