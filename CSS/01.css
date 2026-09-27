@@ -1,0 +1,67 @@
+body{
+    background-image: url(../Images/7.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 0;
+}
+@font-face {
+    font-family: "speak";
+    src: url(../fonts/FontsLab-FuGuShouJi-2.ttf);
+}
+.myhead{
+    width: 100px;
+    border-radius: 50%;
+    position: relative;
+    bottom: 50px;
+}
+.love{
+    height: 100vh;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+.love2{
+    background-image: linear-gradient(to bottom right,
+    #da5a5a8c,
+    #e4e3cb83,
+    #db6ec477,
+    #a96cdb80
+    );
+    backdrop-filter: blur(5px);
+    width: 300px;
+    height: 400px;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+p{
+    color: aqua;
+    font-size: 20px;
+    margin: 0;
+    padding: 10px ;
+    font-weight: bold;
+    font-style: italic;
+    font-family: "speak";
+}
+.gogogo{
+    text-decoration: none;
+    display: inline-block;
+    background-color: #f0f8ff59;
+    color: #fffc62;
+    border: solid 2px #fff;
+    padding: 8px 12px;
+    border-radius: 15px;
+    position: relative;
+    top: 40px;
+    transition: background-color 0.3s, transform 0.5s, color 0.3s;
+}
+.gogogo:hover {
+    background-color:#0000002a;
+    transform: translateY(-5px) scale(1.1);
+    color: #dbc200;
+}
